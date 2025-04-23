@@ -8,16 +8,23 @@ describe('Testes de Listagem de Produtos - SauceDemo', () => {
 
     // act
     cy.get('[data-test="login-button"]').click()
-
-    // assert → feito nos testes abaixo
   })
 
-  it('Deve listar os 6 produtos corretamente após o login', () => {
+  it('Deve finalizar um pedido com sucesso', () => {
+    // arrange
+    cy.get('[data-test="add-to-cart-sauce-labs-backpack"]').click()
+    cy.get('.shopping_cart_link').click()
+    cy.get('[data-test="checkout"]').click()
+
     // act
-    cy.get('.inventory_item')
+    cy.get('[data-test="firstName"]').type('Guilherme')
+    cy.get('[data-test="lastName"]').type('Horstmann')
+    cy.get('[data-test="postalCode"]').type('12345')
+    cy.get('[data-test="continue"]').click()
+    cy.get('[data-test="finish"]').click()
 
     // assert
-    cy.get('.inventory_item').should('have.length', 6)
+    cy.contains('Thank you for your order!').should('be.visible')
   })
 
   it('Deve ordenar os produtos por preço (do menor para o maior)', () => {
@@ -29,13 +36,11 @@ describe('Testes de Listagem de Produtos - SauceDemo', () => {
 
     // act
     cy.get('body').then($body => {
-      // lógica: verifica qual seletor está presente pra interagir com o dropdown
       if ($body.find('[data-test="product_sort_container"]').length) {
         cy.get('[data-test="product_sort_container"]').select('lohi')
       } else if ($body.find('select.product_sort_container').length) {
         cy.get('select.product_sort_container').select('lohi')
       } else {
-        // fallback se não encontrar nenhum dropdown
         cy.log('⚠️ Dropdown de ordenação não encontrado!')
         cy.screenshot('dropdown-nao-encontrado')
       }
@@ -43,11 +48,8 @@ describe('Testes de Listagem de Produtos - SauceDemo', () => {
 
     // assert
     cy.get('.inventory_item_price').then($prices => {
-      // lógica: transforma os preços em número
       const priceTexts = [...$prices].map(el => parseFloat(el.innerText.replace('$', '')))
       const sortedPrices = [...priceTexts].sort((a, b) => a - b)
-
-      // compara a ordem atual com a ordem esperada
       expect(priceTexts).to.deep.equal(sortedPrices)
     })
   })
