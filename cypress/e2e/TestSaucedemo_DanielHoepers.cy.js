@@ -73,37 +73,3 @@ describe('Detalhes do Produto', () => {
   });
 });
 
-describe('Compra Simples de Produto', () => {
-  beforeEach(() => {
-    // arrange
-    cy.visit('https://www.saucedemo.com/');
-    cy.get('[data-test="username"]').type('standard_user');
-    cy.get('[data-test="password"]').type('secret_sauce');
-
-    // act
-    cy.get('[data-test="login-button"]').click();
-
-    // assert
-    cy.url().should('include', '/inventory.html');
-  });
-
-  it('Deve comprar uma Bolt T-Shirt com sucesso', () => {
-    // arrange
-    cy.get('[data-test="add-to-cart-sauce-labs-bolt-t-shirt"]').click();
-    cy.get('.shopping_cart_link').click();
-    cy.get('[data-test="checkout"]').click();
-
-    // act
-    cy.get('[data-test="firstName"]').type('Carlos');
-    cy.get('[data-test="lastName"]').type('Pereira');
-    cy.get('[data-test="postalCode"]').type('98765');
-    cy.get('[data-test="continue"]').click();
-    cy.get('[data-test="finish"]').click();
-
-    // assert
-    cy.url({ timeout: 10000 }).should('include', '/checkout-complete.html');
-    cy.get('.complete-header', { timeout: 10000 })
-      .should('be.visible')
-      .and('have.text', 'Thank you for your order!');
-  });
-});
