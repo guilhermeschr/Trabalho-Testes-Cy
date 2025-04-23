@@ -8,6 +8,7 @@
   },
   "private": true,
   "devDependencies": {
-    "cy": "^0.0.1"
+    "cy": "^0.0.1",
+    "cypress": "^14.3.2"
   }
 }
