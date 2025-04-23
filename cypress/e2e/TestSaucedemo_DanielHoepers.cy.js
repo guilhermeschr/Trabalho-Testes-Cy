@@ -70,6 +70,6 @@ describe('Detalhes do Produto', () => {
     // assert
     cy.url().should('eq', 'https://www.saucedemo.com/inventory.html');
     cy.contains('Products').should('be.visible');
-  });
+  }); 
 });
 
