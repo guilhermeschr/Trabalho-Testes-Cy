@@ -48,9 +48,9 @@ describe('Autenticação', () => {
       cy.get('[data-test="back-to-products"]').click();
       cy.url().should('eq', 'https://www.saucedemo.com/inventory.html');
       cy.contains('Products').should('be.visible');
-    });
+    }); 
   });
-  
+ 
   describe('Compra Simples de Produto', () => {
     beforeEach(() => {
       cy.visit('https://www.saucedemo.com/');
